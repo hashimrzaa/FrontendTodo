@@ -22,13 +22,13 @@ function TodoApp() {
   const [newTodoText, setNewTodoText] = useState("");
   const [editTodoId, setEditTodoId] = useState(null);
   const [editTodoText, setEditTodoText] = useState("");
-
+  const URL = "https://todos-backend-rose.vercel.app";
   useEffect(() => {
     fetchTodos();
   }, []);
 
   const fetchTodos = async () => {
-    const response = await fetch("https://users.cyclic.app/todos");
+    const response = await fetch(URL + "/todos");
     const todosData = await response.json();
     setTodos(todosData);
   };
@@ -37,7 +37,7 @@ function TodoApp() {
     if (newTodoText.trim() === "") {
       return;
     }
-    const response = await fetch("https://users.cyclic.app/todos", {
+    const response = await fetch(URL + "/todos", {
       method: "POST",
       headers: {
         "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
@@ -51,16 +51,13 @@ function TodoApp() {
   };
 
   const editTodo = async () => {
-    const response = await fetch(
-      `https://users.cyclic.app/todos/${editTodoId}`,
-      {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
-        },
-        body: `text=${encodeURIComponent(editTodoText)}`,
-      }
-    );
+    const response = await fetch(URL + `/todos/${editTodoId}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
+      },
+      body: `text=${encodeURIComponent(editTodoText)}`,
+    });
     if (response.ok) {
       setEditTodoId(null);
       setEditTodoText("");
@@ -69,7 +66,7 @@ function TodoApp() {
   };
 
   const deleteTodo = async (id) => {
-    const response = await fetch(`https://users.cyclic.app/todos/${id}`, {
+    const response = await fetch(URL + `/todos/${id}`, {
       method: "DELETE",
     });
     if (response.ok) {
